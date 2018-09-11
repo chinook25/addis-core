@@ -9,15 +9,13 @@ define(['angular', 'lodash'], function(angular, _) {
     'OutcomeResource',
     'PageTitleService',
     'ProblemResource',
+    'ScenarioResource',
     'ProjectResource',
     'ProjectStudiesResource',
-    'ScenarioResource',
-    'SubProblemResource',
     'TrialverseResource',
     'UserService',
     'WorkspaceService',
-    'DEFAULT_VIEW',
-    'gemtcRootPath'
+    'DEFAULT_VIEW'
   ];
   var BenefitRiskStep2Controller = function(
     $scope, $q, $stateParams, $state, $modal,
@@ -28,15 +26,13 @@ define(['angular', 'lodash'], function(angular, _) {
     OutcomeResource,
     PageTitleService,
     ProblemResource,
+    ScenarioResource,
     ProjectResource,
     ProjectStudiesResource,
-    ScenarioResource,
-    SubProblemResource,
     TrialverseResource,
     UserService,
     WorkspaceService,
-    DEFAULT_VIEW,
-    gemtcRootPath
+    DEFAULT_VIEW
   ) {
 
     $scope.goToStep1 = goToStep1;
@@ -197,7 +193,7 @@ define(['angular', 'lodash'], function(angular, _) {
       }).$promise.then(function(result) {
         problem = result;
         $modal.open({
-          templateUrl: gemtcRootPath + 'js/models/setBaselineDistribution.html',
+          templateUrl: 'gemtc-web/js/models/setBaselineDistribution.html',
           controller: 'SetBaselineDistributionController',
           windowClass: 'small',
           resolve: {
@@ -244,14 +240,14 @@ define(['angular', 'lodash'], function(angular, _) {
       return ProblemResource.get($stateParams).$promise.then(function(problemResult) {
         problem = problemResult;
         if (problem.performanceTable.length > 0) {
-          return WorkspaceService.getObservedScales(problem).then(function(result) {
-            var includedAlternatives = _.filter($scope.alternatives, function(alternative) {
+          return WorkspaceService.getObservedScales(problem).then(function (result) {
+            var includedAlternatives = _.filter($scope.alternatives, function (alternative) {
               return alternative.isIncluded;
             });
             $scope.isMissingBaseline = hasMissingBaseLine();
             $scope.outcomesWithAnalyses = BenefitRiskService.addScales($scope.outcomesWithAnalyses,
-              includedAlternatives, result, problem.criteria);
-          }, function() {
+              includedAlternatives, problem.criteria, result);
+          }, function () {
             console.log('WorkspaceService.getObservedScales error');
           });
         }

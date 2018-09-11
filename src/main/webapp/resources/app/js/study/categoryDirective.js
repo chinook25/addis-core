@@ -4,7 +4,7 @@ define([], function() {
   var CategoryDirective = function($stateParams, $modal, $injector) {
     return {
       restrict: 'E',
-      templateUrl: 'app/js/study/categoryDirective.html',
+      templateUrl: './categoryDirective.html',
       scope: {
         studyUuid: '=',
         settings: '=',
@@ -42,7 +42,7 @@ define([], function() {
 
         scope.addItem = function() {
           $modal.open({
-            templateUrl: scope.settings.addItemTemplateUrl,
+            template: scope.settings.addItemtemplate,
             scope: scope,
             controller: scope.settings.addItemController,
             resolve: {

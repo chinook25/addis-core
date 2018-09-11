@@ -62,18 +62,21 @@ define(['lodash'],
       if (!$scope.isHeadView) {
         $scope.versionUuid = $stateParams.versionUuid;
       }
-      $scope.hasLoggedInUser = UserService.hasLoggedInUser();
+      UserService.getLoginUser().then(function(user) {
+        $scope.loggedInUser = user;
+        $scope.hasLoggedInUser = !!user;
+      });
       $scope.stripFrontFilter = $filter('stripFrontFilter');
       $scope.isEditingAllowed = false;
 
       loadStudiesWithDetail();
       $scope.datasetConcepts = loadConcepts(); // scope placement for child states
       $scope.datasetConcepts.then(function(concepts) {
-        $scope.interventions = _.chain(concepts['@graph'])
+        $scope.interventions = _(concepts['@graph'])
           .filter(['@type', 'ontology:Drug'])
           .sortBy(['label'])
           .value();
-        $scope.variables = _.chain(concepts['@graph'])
+        $scope.variables = _(concepts['@graph'])
           .filter(['@type', 'ontology:Variable'])
           .sortBy(['label'])
           .value();
@@ -109,7 +112,7 @@ define(['lodash'],
             }
           }
 
-          $scope.isEditingAllowed = isEditingAllowed();
+          checkEditingAllowed();
         });
       }
 
@@ -117,8 +120,10 @@ define(['lodash'],
         return $scope.currentRevision && $scope.currentRevision.isHead;
       }
 
-      function isEditingAllowed() {
-        return !!($scope.dataset && UserService.isLoginUserEmail($scope.dataset.creator) && isEditAllowedOnVersion());
+      function checkEditingAllowed() {
+        UserService.isLoginUserEmail($scope.dataset.creator).then(function(isOwner) {
+          $scope.isEditingAllowed = !!($scope.dataset && isOwner && isEditAllowedOnVersion());
+        });
       }
 
       function loadConcepts() {
@@ -157,7 +162,7 @@ define(['lodash'],
             comment: getPurlProperty(dsResponse, 'description'),
             creator: getPurlProperty(dsResponse, 'creator')
           };
-          $scope.isEditingAllowed = isEditingAllowed();
+          checkEditingAllowed();
           PageTitleService.setPageTitle('DatasetController', $scope.dataset.title);
         });
       }
@@ -205,7 +210,7 @@ define(['lodash'],
 
       function showTableOptions() {
         $modal.open({
-          templateUrl: 'app/js/dataset/tableOptions.html',
+          templateUrl: './tableOptions.html',
           scope: $scope,
           controller: function($scope, $modalInstance) {
             $scope.cancel = function() {
@@ -226,7 +231,7 @@ define(['lodash'],
 
       function showStudyDialog() {
         $modal.open({
-          templateUrl: 'app/js/dataset/createStudy.html',
+          templateUrl: './createStudy.html',
           scope: $scope,
           controller: 'CreateStudyController',
           resolve: {
@@ -245,7 +250,7 @@ define(['lodash'],
 
       function showDeleteStudyDialog(study) {
         $modal.open({
-          templateUrl: 'app/js/dataset/deleteStudy.html',
+          templateUrl: './deleteStudy.html',
           scope: $scope,
           controller: 'DeleteStudyController',
           windowClass: 'small',
@@ -268,7 +273,7 @@ define(['lodash'],
 
       function createProjectDialog() {
         $modal.open({
-          templateUrl: 'app/js/project/createProjectModal.html',
+          templateUrl: '../project/createProjectModal.html',
           controller: 'CreateProjectModalController',
           resolve: {
             callback: function() {
@@ -292,7 +297,7 @@ define(['lodash'],
 
       function showEditDatasetModal() {
         $modal.open({
-          templateUrl: 'app/js/dataset/editDataset.html',
+          templateUrl: './editDataset.html',
           controller: 'EditDatasetController',
           resolve: {
             dataset: function() {

@@ -1,23 +1,24 @@
 'use strict';
-var requires = [
-  'resources/evidenceTableResource',
-  'resources/projectResource',
-  'resources/trialverseResource',
-  'resources/semanticOutcomeResource',
-  'resources/semanticInterventionResource',
-  'resources/outcomeResource',
-  'resources/interventionResource',
-  'resources/analysisResource',
-  'resources/trialverseStudyResource',
-  'resources/projectStudiesResource',
-  'resources/trialverseStudiesWithDetailsResource',
-  'resources/scenarioResource',
-  'resources/scaledUnitResource',
-  'resources/subProblemResource',
-  'resources/orderingResource',
-  'resources/workspaceSettingsResource'
-];
-define(requires.concat(['angular', 'angular-resource']), function(
+define([
+  './resources/evidenceTableResource',
+  './resources/projectResource',
+  './resources/trialverseResource',
+  './resources/semanticOutcomeResource',
+  './resources/semanticInterventionResource',
+  './resources/outcomeResource',
+  './resources/interventionResource',
+  './resources/analysisResource',
+  './resources/trialverseStudyResource',
+  './resources/projectStudiesResource',
+  './resources/trialverseStudiesWithDetailsResource',
+  './resources/scenarioResource',
+  './resources/scaledUnitResource',
+  './resources/subProblemResource',
+  './resources/orderingResource',
+  './resources/workspaceSettingsResource',
+  'angular',
+  'angular-resource'
+], function(
   EvidenceTableResource,
   ProjectResource,
   TrialverseResource,
@@ -52,6 +53,6 @@ define(requires.concat(['angular', 'angular-resource']), function(
     .factory('ScaledUnitResource', ScaledUnitResource)
     .factory('SubProblemResource', SubProblemResource)
     .factory('OrderingResource', OrderingResource)
-    .factory('WorkspaceSettingsResource',WorkspaceSettingsResource)
+    .factory('WorkspaceSettingsResource', WorkspaceSettingsResource)
     ;
 });

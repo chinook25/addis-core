@@ -5,7 +5,7 @@ define(['angular'], function(angular) {
   var CategoryItemDirective = function($modal, $injector) {
     return {
       restrict: 'E',
-      templateUrl: 'app/js/study/categoryItemDirective.html',
+      templateUrl: './categoryItemDirective.html',
       scope: {
         item: '=',
         reloadItems: '=',
@@ -34,7 +34,7 @@ define(['angular'], function(angular) {
         scope.editItem = function() {
           $modal.open({
             scope: scope,
-            templateUrl: scope.settings.editItemTemplateUrl,
+            template: scope.settings.editItemtemplate,  // small t due to webpack templateurl module
             controller: scope.settings.editItemController,
             resolve: {
               callback: function () {
@@ -59,7 +59,7 @@ define(['angular'], function(angular) {
         scope.repairItem = function() {
           $modal.open({
             scope: scope,
-            templateUrl: scope.settings.repairItemTemplateUrl,
+            template: scope.settings.repairItemtemplate,
             controller: scope.settings.repairItemController,
             resolve: {
               callback: function () {

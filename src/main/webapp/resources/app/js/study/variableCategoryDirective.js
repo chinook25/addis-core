@@ -6,7 +6,7 @@ define(['lodash'], function(_) {
     MeasurementMomentService) {
     return {
       restrict: 'E',
-      templateUrl: 'app/js/study/variableCategoryDirective.html',
+      templateUrl: './variableCategoryDirective.html',
       scope: {
         studyUuid: '=',
         settings: '=',
@@ -92,7 +92,7 @@ define(['lodash'], function(_) {
 
         scope.addItem = function() {
           $modal.open({
-            templateUrl: scope.settings.addItemTemplateUrl,
+            template: scope.settings.addItemTemplate,
             scope: scope,
             controller: scope.settings.addItemController,
             resolve: {

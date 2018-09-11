@@ -1,14 +1,16 @@
 'use strict';
-var requires = [
-  'analysis/addAnalysisController',
-  'analysis/benefitRiskStep1Controller',
-  'analysis/benefitRiskStep2Controller',
-  'analysis/benefitRiskController',
-  'analysis/abstractBenefitRiskController',
-  'analysis/benefitRiskService',
-  'analysis/directives/studySelectDirective'
-];
-define(requires.concat('angular', 'angular-resource'), function(
+define([
+  './addAnalysisController',
+  './benefitRiskStep1Controller',
+  './benefitRiskStep2Controller',
+  './benefitRiskController',
+  './abstractBenefitRiskController',
+  './benefitRiskService',
+  './directives/studySelectDirective',
+  'angular',
+  'angular-resource',
+  'mcda-web/js/workspace/workspace'
+], function(
   AddAnalysisController,
   BenefitRiskStep1Controller,
   BenefitRiskStep2Controller,
@@ -18,19 +20,20 @@ define(requires.concat('angular', 'angular-resource'), function(
   studySelect,
   angular
 ) {
-  var dependencies = ['ngResource'];
-  return angular.module('addis.analysis',
+    var dependencies = ['ngResource', 'elicit.workspace'];
+    return angular.module('addis.analysis',
       dependencies)
-    // controllers
-    .controller('AddAnalysisController', AddAnalysisController)
-    .controller('BenefitRiskStep1Controller', BenefitRiskStep1Controller)
-    .controller('BenefitRiskStep2Controller', BenefitRiskStep2Controller)
-    .controller('BenefitRiskController', BenefitRiskController)
-    .controller('AbstractBenefitRiskController', AbstractBenefitRiskController)
-    //services
-    .factory('BenefitRiskService', BenefitRiskService)
-    //directives
-    .directive('studySelect', studySelect)
+      // controllers
+      .controller('AddAnalysisController', AddAnalysisController)
+      .controller('BenefitRiskStep1Controller', BenefitRiskStep1Controller)
+      .controller('BenefitRiskStep2Controller', BenefitRiskStep2Controller)
+      .controller('BenefitRiskController', BenefitRiskController)
+      .controller('AbstractBenefitRiskController', AbstractBenefitRiskController)
+      //services
+      .factory('BenefitRiskService', BenefitRiskService)
+      //directives
+      .directive('studySelect', studySelect)
 
-  ;
-});
+      ;
+  }
+);

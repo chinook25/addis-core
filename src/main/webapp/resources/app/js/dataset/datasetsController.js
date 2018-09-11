@@ -26,8 +26,11 @@ define(['lodash'], function(_) {
     });
     reloadDatasets();
     $scope.stripFrontFilter = $filter('stripFrontFilter');
-    $scope.loginUser = UserService.getLoginUser();
-    $scope.showCreateProjectButton = UserService.hasLoggedInUser();
+    
+    UserService.getLoginUser().then(function(user) {
+      $scope.loginUser = user;
+      $scope.showCreateProjectButton = !!user;
+    });
 
 
     function reloadDatasets() {
@@ -38,7 +41,7 @@ define(['lodash'], function(_) {
 
     function createDatasetDialog() {
       $modal.open({
-        templateUrl: 'app/js/user/createDataset.html',
+        templateUrl: './createDataset.html',
         controller: 'CreateDatasetController',
         resolve: {
           callback: function() {
@@ -53,7 +56,7 @@ define(['lodash'], function(_) {
 
     function createProjectDialog(dataset) {
       $modal.open({
-        templateUrl: 'app/js/project/createProjectModal.html',
+        templateUrl: '../project/createProjectModal.html',
         controller: 'CreateProjectModalController',
         resolve: {
           callback: function() {
