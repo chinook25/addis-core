@@ -47,7 +47,10 @@ define(['angular-mocks', './analysis'], function() {
         'isInvalidStudySelected',
         'hasMissingStudy',
         'findOverlappingOutcomes',
-        'addStudiesToOutcomes'
+        'addStudiesToOutcomes',
+        'addModelBaseline',
+        'analysisToSaveCommand',
+        'finalizeAndGoToDefaultScenario'
       ]);
 
     beforeEach(angular.mock.module('addis.analysis'));
@@ -80,12 +83,15 @@ define(['angular-mocks', './analysis'], function() {
         $promise: modelsDefer.promise
       });
       projectResourceMock.get.and.returnValue({
+        owner: {
+          id: 1
+        },
         $promise: projectDefer.promise
       });
       projectStudiesResourceMock.query.and.returnValue({
         $promise: studiesDefer.promise
       });
-      userServiceMock.isLoginUserId.and.returnValue(true);
+      userServiceMock.isLoginUserId.and.returnValue($q.resolve(true));
 
       benefitRiskService.compareAnalysesByModels.and.returnValue(0);
       benefitRiskService.joinModelsWithAnalysis.and.returnValue([]);
@@ -122,22 +128,26 @@ define(['angular-mocks', './analysis'], function() {
     describe('when the analysis, outcomes, models, studies and alternatives are loaded', function() {
       beforeEach(function() {
         benefitRiskService.buildOutcomeWithAnalyses.and.returnValue({
-          networkMetaAnalyses: [],
+          networkMetaAnalyses: [{}],
           outcome: {
             id: 1
           }
         });
-
-        analysisDefer.resolve({
-          benefitRiskNMAOutcomeInclusions: [],
-          benefitRiskStudyOutcomeInclusions: []
+        projectDefer.resolve({
+          owner: {
+            id: 1
+          }
         });
-        interventionDefer.resolve([]);
+        analysisDefer.resolve({
+          benefitRiskNMAOutcomeInclusions: [{}],
+          benefitRiskStudyOutcomeInclusions: [{}]
+        });
+        interventionDefer.resolve([{}]);
         outcomeDefer.resolve([{
         }]);
         analysisQueryDefer.resolve([{}]);
-        modelsDefer.resolve([]);
-        studiesDefer.resolve([]);
+        modelsDefer.resolve([{}]);
+        studiesDefer.resolve([{}]);
         scope.$digest();
       });
 
